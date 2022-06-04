@@ -21,20 +21,6 @@ class Shop(models.Model):
     shopping_hours_start = models.TimeField(auto_now=False, auto_now_add=False)
     shopping_hours_end = models.TimeField(auto_now=False, auto_now_add=False)
 
-    @property
-    def is_night(self):
-        if self.shopping_hours_start<self.shopping_hours_end:
-            return False
-        else:
-            return True
-
-    @property
-    def is_all_day(self):
-        if self.shopping_hours_start==self.shopping_hours_end:
-            return True
-        else:
-            return False
-
     class Meta:
         unique_together = ['street','building','title'] #ограничение, чтобы исключить дублирование магазина в базе
 
