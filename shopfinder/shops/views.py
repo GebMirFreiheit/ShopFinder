@@ -8,9 +8,12 @@ from rest_framework.decorators import api_view
 from .models import City,Street,Shop
 from .serializers import ShopSerializer
 
+def handler404(request, exception):
+    return HttpResponse(status=400,content='The requested resource was not found on this server')
+
 def list_city(request):
     cities = City.objects.all()
-    context={'cities':[city.title for city in cities]}
+    context={'cities':[{'title':city.title,'id':city.id} for city in cities]}
     return JsonResponse(context,json_dumps_params={'ensure_ascii': False})
 
 def list_streets(request,city_id):
@@ -19,7 +22,7 @@ def list_streets(request,city_id):
     except City.DoesNotExist:
         return HttpResponse(status=400,content='Нет города с таким идентификатором')
     streets = Street.objects.filter(city=city)
-    context={'streets':[street.title for street in streets]}
+    context={'streets':[{'title':street.title,'id':street.id} for street in streets]}
     return JsonResponse(context,json_dumps_params={'ensure_ascii': False})
 
 @csrf_exempt
